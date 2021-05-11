@@ -5,6 +5,7 @@
 
 ### Innan spelstart / "Home" sidan
 - Som spelare vill jag kunna se ett "fint omslag" när jag kommer till hemsidan.
+- Som spelare vill jag kunna bjuda in andra spelare genom att antingen skicka ett mail med länk eller endast genom att skicka en länk privat till spelaren.
 - OPTIONAL (Som spelare vill jag kunna skapa en användare som sparas till databas med hashat lösenord som jag sedan kan logga in med, isåfall ska jag kunna logga in och ladda något av mina sparade spel. Det ska räcka med att en användare loggar in och då ska den personen kunna bjuda in "gäster" att spela med så att vi enklare kan spara spelet kopplat till användaren i en databas)
 - Som spelare vill jag kunna välja att starta/ladda ett spel.
 - Som spelare vill jag kunna spara ett pågående spel.
