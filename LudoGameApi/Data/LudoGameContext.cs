@@ -1,4 +1,5 @@
-﻿using LudoGameApi.Objects;
+﻿using LudoGameApi.Models;
+using LudoGameApi.Objects;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

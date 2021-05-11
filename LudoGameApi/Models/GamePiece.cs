@@ -1,11 +1,12 @@
-﻿using System;
+﻿using LudoGameApi.Objects;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LudoGameApi.Objects
+namespace LudoGameApi.Models
 {
     public class GamePiece
     {
