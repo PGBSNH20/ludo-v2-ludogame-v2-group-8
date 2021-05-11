@@ -19,6 +19,7 @@ namespace LudoGameV2.Pages
 
         public void OnGet()
         {
+            // Logiken => LudoGameApi => Controller => Middleware / Auth => GET/POST/PUT/DELET | (Databas) => OnGet();
         }
     }
 }
