@@ -1,4 +1,9 @@
 # Log book documentation
+---
+
+**2021-05-12**
+- Included a CSS stylesheet called styles.css
+- Learning some HTML CANVAS for creating a visual Ludo board
 
 ---
 
