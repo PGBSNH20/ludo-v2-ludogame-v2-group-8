@@ -1,5 +1,11 @@
 # Log book documentation
+---
 
+**2021-05-12**
+- Exploring and getting knowledge so that we can work on our project
+- Included a CSS stylesheet called styles.css
+- Learning some HTML CANVAS for creating a visual Ludo board
+ 
 ---
 
 **2021-05-11**
