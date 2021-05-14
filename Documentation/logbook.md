@@ -1,6 +1,12 @@
 # Log book documentation
 ---
 
+**2021-05-14**
+- Created an image of the ludo board for starter 
+- Created a roll dice for starter
+
+---
+
 **2021-05-12**
 - Exploring and getting knowledge so that we can work on our project
 - Included a CSS stylesheet called styles.css
