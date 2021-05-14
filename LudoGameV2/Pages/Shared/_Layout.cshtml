@@ -33,6 +33,8 @@
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
+            @RenderSection("script_main", required: false)
+            @RenderSection("script_dice", required: false)
         </main>
     </div>
 

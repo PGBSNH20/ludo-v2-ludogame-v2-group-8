@@ -4,11 +4,16 @@
     ViewData["Title"] = "Home page";
 }
 @section styles{
-    <link rel="Stylesheet" href="@Href("~/css/styles.css")" />
+    <link rel="Stylesheet" href="@Href("~/css/style.css")" />
 }
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<menu id="controls"><button id="dice_btn">Roll dice</button></menu>
+<div id="container">
+    <canvas id="ludoBoard"></canvas>
 </div>
-<canvas id="ludoBoard"></canvas>
-<script src="js/site.js"></script>
+
+@section script_main {
+    <script src="@Url.Content("~/js/main.js")"></script>
+}
+@section script_dice {
+    <script src="@Url.Content("~/js/dice.js")"></script>
+}
