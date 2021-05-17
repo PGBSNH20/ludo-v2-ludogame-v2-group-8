@@ -20,8 +20,8 @@ namespace LudoGameApi.Models
         public int? InnerPosition { get; set; }
         public bool InnerRoute { get; set; }
         public bool InGoal { get; set; }
-        [Required]
-        public Player Player { get; set; } // For join database tables.
+        public int PlayerId { get; set; }
+        //public Player Player { get; set; } // For join database tables.
         //[NotMapped]
         //public List<List<GamePiece>> AllGamePieces { get; set; }
 
