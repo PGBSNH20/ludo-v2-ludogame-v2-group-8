@@ -17,21 +17,42 @@ namespace LudoGameApi.Controllers
             _dbContext = dbContext;
         }
 
-        [HttpGet("[action]/{playerName}/{color}/{gameSessionId}")]
-        public IActionResult CreatePlayer(string playerName, Color color, int gameSessionId)
+        [HttpPost("[action]/{playerName}/{color}/{gameSessionId}")]
+        public async Task<IActionResult> CreatePlayer(string playerName, Color color, int gameSessionId)
         {
             if (String.IsNullOrWhiteSpace(playerName))
             {
                 return BadRequest("Playername must be valid");
             }
 
+            if (gameSessionId <= 0)
+            {
+                return BadRequest($"There is no session with id {gameSessionId}");
+            }
+
+            var containsGameSession = _dbContext.SessionName.Where(x => x.Id == gameSessionId).Any();
+            if (!containsGameSession)
+            {
+                return BadRequest($"Game session id {gameSessionId} doesn't exist");
+            }
+
+            var containsPlayerInSameSession = _dbContext.Player.Where(x => x.PlayerName == playerName && x.GameSessionId == gameSessionId).Any();
+            if (containsPlayerInSameSession)
+            {
+                return BadRequest($"A player by the name {playerName} already exist in game session {gameSessionId}");
+            }
+
             Player playerObj = new()
             {
                 PlayerName = playerName,
-                Color = color
+                Color = color,
+                GameSessionId = gameSessionId,
             };
 
-            return View();
+            _dbContext.Player.Add(playerObj);
+            await _dbContext.SaveChangesAsync();
+
+            return Ok($"Player {playerName} has successfully been created");
         }
     }
 }

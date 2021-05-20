@@ -16,5 +16,6 @@ namespace LudoGameApi.Models
         public Color Color { get; set; }
         [Required]
         public ICollection<GamePiece> Pieces { get; set; }
+        public int GameSessionId { get; set; }
     }
 }

@@ -17,7 +17,7 @@ namespace LudoGameApi.Controllers
             _dbContext = dbContext;
         }
 
-        [HttpGet("[action]/{name}")]
+        [HttpPost("[action]/{name}")]
         public async Task<IActionResult> CreateSession(string name)
         {
             if (String.IsNullOrWhiteSpace(name))
