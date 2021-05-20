@@ -25,14 +25,6 @@ namespace LudoGameApi.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            //var options = new DbContextOptionsBuilder<LudoGameContext>().UseSqlServer(@"Server=localhost,41433;Initial Catalog=FakeLudoV2;User ID=sa;Password=#Hejsan123;MultipleActiveResultSets=true").Options;
-            //using (var db = new LudoGameContext(options))
-            //{
-            //    var json = JsonConvert.SerializeObject(db.Pieces);
-            //    return Ok(json);
-            //}
-            // 
-
             return Ok(_dbContext.Pieces);
 
         }

@@ -1,11 +1,11 @@
-﻿using LudoGameApi.Objects;
+﻿using LudoGameV2.Objects;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LudoGameApi.Models
+namespace LudoGameV2.Models
 {
     public class Player
     {
