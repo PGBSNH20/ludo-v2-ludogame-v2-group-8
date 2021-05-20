@@ -33,7 +33,7 @@ namespace LudoGameApi_Test
 
             myContextMoq.Setup(x => x.SessionName).ReturnsDbSet(session);
 
-            var testingSession = new SessionNameController(myContextMoq.Object);
+            var testingSession = new SessionNamesController(myContextMoq.Object);
 
             //Act
             var result = await testingSession.CreateSession("LudoGänget");
@@ -55,7 +55,7 @@ namespace LudoGameApi_Test
 
             myContextMoq.Setup(x => x.SessionName).ReturnsDbSet(session);
 
-            var testingSession = new SessionNameController(myContextMoq.Object);
+            var testingSession = new SessionNamesController(myContextMoq.Object);
 
             //Act
             var result = await testingSession.CreateSession("BlackMamba");
@@ -79,7 +79,7 @@ namespace LudoGameApi_Test
 
             myContextMoq.Setup(x => x.SessionName).ReturnsDbSet(session);
 
-            var testingSession = new SessionNameController(myContextMoq.Object);
+            var testingSession = new SessionNamesController(myContextMoq.Object);
 
             //Act
             var result = await testingSession.DeleteSession("BlackMamba");
@@ -101,7 +101,7 @@ namespace LudoGameApi_Test
 
             myContextMoq.Setup(x => x.SessionName).ReturnsDbSet(session);
 
-            var testingSession = new SessionNameController(myContextMoq.Object);
+            var testingSession = new SessionNamesController(myContextMoq.Object);
 
             //Act
             var result = await testingSession.DeleteSession("LudoGänget");

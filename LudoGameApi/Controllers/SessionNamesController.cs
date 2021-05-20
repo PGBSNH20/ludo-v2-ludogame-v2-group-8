@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace LudoGameApi.Controllers
 {
-    public class SessionNameController : Controller
+    public class SessionNamesController : Controller
     {
         private readonly LudoGameContext _dbContext;
-        public SessionNameController(LudoGameContext dbContext)
+        public SessionNamesController(LudoGameContext dbContext)
         {
             _dbContext = dbContext;
         }
