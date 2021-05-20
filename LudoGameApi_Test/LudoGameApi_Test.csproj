@@ -31,4 +31,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\LudoGameApi\LudoGameApi.csproj" />
+  </ItemGroup>
+
 </Project>
