@@ -8,8 +8,8 @@ namespace LudoGameApi.Objects
     public enum Color
     {
         Red,
-        Green,
         Blue,
+        Green,
         Yellow
     }
 }
