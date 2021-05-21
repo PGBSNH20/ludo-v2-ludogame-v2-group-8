@@ -17,6 +17,7 @@ namespace LudoGameApi.Controllers
             _dbContext = dbContext;
         }
 
+        
         [HttpPost("[action]/{playerName}/{color}/{gameSessionId}")]
         public async Task<IActionResult> CreatePlayer(string playerName, Color color, int gameSessionId)
         {
@@ -53,6 +54,38 @@ namespace LudoGameApi.Controllers
             await _dbContext.SaveChangesAsync();
 
             return Ok($"Player {playerName} has successfully been created");
+        }
+
+        
+        [HttpDelete("[action]/{playerName}/{gameSessionId}")]
+        public async Task<IActionResult> DeletePlayer(string playerName, int gameSessionId)
+        {
+            if (String.IsNullOrWhiteSpace(playerName))
+            {
+                return BadRequest("Playername must be valid");
+            }
+
+            if (gameSessionId <= 0)
+            {
+                return BadRequest($"There is no session with id {gameSessionId}");
+            }
+
+            var containsGameSession = _dbContext.SessionName.Where(x => x.Id == gameSessionId).Any();
+            if (!containsGameSession)
+            {
+                return BadRequest($"Game session id {gameSessionId} doesn't exist");
+            }
+
+            var containsPlayerInSameSession = _dbContext.Player.Where(x => x.PlayerName == playerName && x.GameSessionId == gameSessionId);
+            if (!containsPlayerInSameSession.Any())
+            {
+                return BadRequest($"A player by the name {playerName} doesn't exist in game session {gameSessionId}");
+            }
+
+            _dbContext.Player.Remove(containsPlayerInSameSession.FirstOrDefault());
+            await _dbContext.SaveChangesAsync();
+
+            return Ok($"Player {playerName} has been deleted");
         }
     }
 }
