@@ -4,9 +4,19 @@
     ViewData["Title"] = "Ludo Game";
 }
 
-<h2>Ludo Game</h2>
+<h3>Ludo Game</h3>
 <form method="post">
+    <select name="RequestMethod" class="form-control">
+        <option value="GET">New Game</option>
+        <option value="POST">Continue</option>
+    </select>
+
     <div>
-        <label for=""
+        <textarea asp-for="Data" class="form-control"></textarea>
+    </div>
+
+
+    <div>
+        <input type="submit" value="Submit" />
     </div>
 </form>
