@@ -33,6 +33,9 @@ namespace LudoGameV2.Pages
         public string Data { get; set; }
         [BindProperty]
         public string RequestMethod { get; set; }
+
+        
+
         public async Task<IActionResult> OnPostAsync()
         {
             //var request = new RestRequest("GameSessions/", DataFormat.Json);
@@ -69,7 +72,7 @@ namespace LudoGameV2.Pages
             //    game.Add(g);
             //}
             //var queryResult = await client.ExecuteAsync(request);
-            return RedirectToPage("index", new { result = responseContent });
+            return RedirectToPage("NewGame", new { result = responseContent });
         }
         //public async Task<IActionResult> OnPost()
         //{
