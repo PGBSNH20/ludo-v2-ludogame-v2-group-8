@@ -17,6 +17,8 @@ namespace LudoGameV2.Pages
 
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
 
+        public string ExceptionMessage { get; set; }
+
         private readonly ILogger<ErrorModel> _logger;
 
         public ErrorModel(ILogger<ErrorModel> logger)
@@ -24,9 +26,11 @@ namespace LudoGameV2.Pages
             _logger = logger;
         }
 
-        public void OnGet()
+        public void OnGet(string msg)
         {
             RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
+
+            ExceptionMessage = msg;
         }
     }
 }
