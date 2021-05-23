@@ -11,9 +11,39 @@
     <canvas id="ludoBoard"></canvas>
 </div>
 
-@section script_main {
+
+<div>
+    <ul id="ludo-game"></ul>
+</div>
+
+
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+
+<script>
+    $(function () {
+
+        // We create a connection here 
+        var connection = new signalR.HubConnectionBuilder()
+            .withUrl("/ludoGameHub")
+            .build();
+
+        // And then we have some kind of an self made event handler, 
+        // if we think of it like that
+        connection.on("Broadcast", function (message) {
+            $("ludo-game").append("<li>" + message + "</li>")
+        });
+
+        // We start the connection here
+        connection.start().catch(function (err) {
+            return console.err(err.toString());
+        });
+    });
+</script>
+
+@*@section script_main {
     <script src="@Url.Content("~/js/main.js")"></script>
 }
 @section script_dice {
     <script src="@Url.Content("~/js/dice.js")"></script>
-}
+}*@
