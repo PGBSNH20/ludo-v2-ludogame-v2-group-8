@@ -6,44 +6,49 @@
 @section styles{
     <link rel="Stylesheet" href="@Href("~/css/style.css")" />
 }
-<menu id="controls"><button id="dice_btn">Roll dice</button></menu>
-<div id="container">
-    <canvas id="ludoBoard"></canvas>
+
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <form>
+                <div class="form-group">
+                    <label for="userInput">User</label>
+                    <input type="text" class="form-control" id="userInput" aria-describedby="userHelp" placeholder="Enter User">
+                </div>
+                <div class="form-group">
+                    <label for="messageInput">Message</label>
+                    <input type="text" class="form-control" id="messageInput" aria-describedby="messageHelp" placeholder="Enter Message">
+                </div>
+                <button type="button" id="sendButton" class="btn btn-primary">Send Message</button>
+            </form>
+        </div>
+        <div class="col-6">
+            <ul id="messagesList"></ul>
+        </div>
+    </div>
 </div>
-
-
-<div>
-    <ul id="ludo-game"></ul>
-</div>
-
 
 <script src="~/js/signalr/dist/browser/signalr.js"></script>
 <script src="~/lib/jquery/dist/jquery.js"></script>
 
 <script>
-    $(function () {
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/chathub")
+        .configureLogging(signalR.LogLevel.Trace)
+        .build();
 
-        // We create a connection here 
-        var connection = new signalR.HubConnectionBuilder()
-            .withUrl("/ludoGameHub")
-            .build();
+    connection.on("ReceiveMessage", (user, message) => {
+        const li = document.createElement("li");
+        li.textContent = user + " says " + message;
+        document.getElementById("messagesList").appendChild(li);
+    });
 
-        // And then we have some kind of an self made event handler, 
-        // if we think of it like that
-        connection.on("Broadcast", function (message) {
-            $("ludo-game").append("<li>" + message + "</li>")
-        });
+    connection.start().catch(err => console.error(err.toString()));
 
-        // We start the connection here
-        connection.start().catch(function (err) {
-            return console.err(err.toString());
-        });
+    document.getElementById("sendButton").addEventListener("click", event => {
+        const user = document.getElementById("userInput").value;
+        const message = document.getElementById("messageInput").value;
+        connection.invoke("SendMessage", user, message).catch(err => console.error(err.toString()));
+        event.preventDefault();
     });
 </script>
-
-@*@section script_main {
-    <script src="@Url.Content("~/js/main.js")"></script>
-}
-@section script_dice {
-    <script src="@Url.Content("~/js/dice.js")"></script>
-}*@
