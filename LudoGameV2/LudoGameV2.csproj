@@ -21,10 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Hubs\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\LudoGameApi\LudoGameApi.csproj" />
   </ItemGroup>
 
