@@ -14,14 +14,14 @@ namespace LudoGameV2.Models
         [Required]
         public string Name { get; set; }
         public Color Color { get; set; }
-        public int StartPosition { get; set; }
-        public int EndPosition { get; set; }
-        public int? CurrentPosition { get; set; }
-        public int? InnerPosition { get; set; }
-        public bool InnerRoute { get; set; }
+        public double TopPosition { get; set; }
+        public double LeftPosition { get; set; }
+        [Range(0, 44)]
+        public int PositionOnBoard { get; set; }
+        [Range(0, 4)]
         public bool InGoal { get; set; }
-        public int PlayerId { get; set; }
-        //public Player Player { get; set; } // For join database tables.
+        [Required]
+        public Player Player { get; set; } // For join database tables.
         //[NotMapped]
         //public List<List<GamePiece>> AllGamePieces { get; set; }
 

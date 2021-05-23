@@ -43,8 +43,6 @@ namespace LudoGameApi.Controllers
             _dbContext.Pieces.Add(pieceObj);
             _dbContext.SaveChanges();
             return StatusCode(StatusCodes.Status201Created);
-
-
         }
 
         // PUT api/<GamePiecesController>/5

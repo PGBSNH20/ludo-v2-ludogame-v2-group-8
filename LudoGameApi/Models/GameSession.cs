@@ -9,6 +9,6 @@ namespace LudoGameApi.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public ICollection<Player> Players { get; set; }
+        public List<Player> Player { get; set; }
     }
 }

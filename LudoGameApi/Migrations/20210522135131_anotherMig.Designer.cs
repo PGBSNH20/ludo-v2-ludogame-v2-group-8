@@ -4,14 +4,16 @@ using LudoGameApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LudoGameApi.Migrations
 {
     [DbContext(typeof(LudoGameContext))]
-    partial class LudoGameContextModelSnapshot : ModelSnapshot
+    [Migration("20210522135131_anotherMig")]
+    partial class AnotherMig
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,9 +41,6 @@ namespace LudoGameApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PlayerId")
-                        .HasColumnType("int");
-
                     b.Property<int>("PositionOnBoard")
                         .HasColumnType("int");
 
@@ -49,8 +48,6 @@ namespace LudoGameApi.Migrations
                         .HasColumnType("float");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PlayerId");
 
                     b.ToTable("Pieces");
                 });
@@ -65,7 +62,12 @@ namespace LudoGameApi.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("PlayerId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("PlayerId");
 
                     b.ToTable("GameSession");
                 });
@@ -80,7 +82,7 @@ namespace LudoGameApi.Migrations
                     b.Property<int>("Color")
                         .HasColumnType("int");
 
-                    b.Property<int?>("GameSessionId")
+                    b.Property<int?>("GamePieceId")
                         .HasColumnType("int");
 
                     b.Property<string>("PlayerName")
@@ -89,32 +91,26 @@ namespace LudoGameApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GameSessionId");
+                    b.HasIndex("GamePieceId");
 
                     b.ToTable("Player");
                 });
 
-            modelBuilder.Entity("LudoGameApi.Models.GamePiece", b =>
-                {
-                    b.HasOne("LudoGameApi.Models.Player", null)
-                        .WithMany("GamePiece")
-                        .HasForeignKey("PlayerId");
-                });
-
-            modelBuilder.Entity("LudoGameApi.Models.Player", b =>
-                {
-                    b.HasOne("LudoGameApi.Models.GameSession", null)
-                        .WithMany("Player")
-                        .HasForeignKey("GameSessionId");
-                });
-
             modelBuilder.Entity("LudoGameApi.Models.GameSession", b =>
                 {
+                    b.HasOne("LudoGameApi.Models.Player", "Player")
+                        .WithMany()
+                        .HasForeignKey("PlayerId");
+
                     b.Navigation("Player");
                 });
 
             modelBuilder.Entity("LudoGameApi.Models.Player", b =>
                 {
+                    b.HasOne("LudoGameApi.Models.GamePiece", "GamePiece")
+                        .WithMany()
+                        .HasForeignKey("GamePieceId");
+
                     b.Navigation("GamePiece");
                 });
 #pragma warning restore 612, 618

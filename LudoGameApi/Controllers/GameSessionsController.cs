@@ -1,4 +1,6 @@
 ﻿using LudoGameApi.Data;
+using LudoGameApi.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -24,7 +26,8 @@ namespace LudoGameApi.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var board = _dbContext.SessionName;
+            var board = _dbContext.GameSession;
+            // Måste nog joina alla tre tabellerna för att få fram start positionerna
             return Ok(board);
         }
 
@@ -32,7 +35,7 @@ namespace LudoGameApi.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var board = _dbContext.SessionName.Find(id);
+            var board = _dbContext.GameSession.Find(id);
             if (board == null)
             {
                 return NotFound();
@@ -42,8 +45,11 @@ namespace LudoGameApi.Controllers
 
         // POST api/<GameSessionssController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] GameSession boardObj)
         {
+            _dbContext.GameSession.Add(boardObj);
+            _dbContext.SaveChanges();
+            return StatusCode(StatusCodes.Status201Created);
         }
 
         // PUT api/<GameSessionssController>/5
