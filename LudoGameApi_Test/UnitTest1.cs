@@ -36,7 +36,7 @@ namespace LudoGameApi_Test
             var testingSession = new SessionNamesController(myContextMoq.Object);
 
             //Act
-            var result = await testingSession.CreateSession("LudoGänget");
+            var result = await testingSession.CreateSession("LudoGï¿½nget");
 
             //Assert
             Assert.IsType<OkObjectResult>(result);
@@ -104,7 +104,7 @@ namespace LudoGameApi_Test
             var testingSession = new SessionNamesController(myContextMoq.Object);
 
             //Act
-            var result = await testingSession.DeleteSession("LudoGänget");
+            var result = await testingSession.DeleteSession("LudoGï¿½nget");
 
             //Assert
             Assert.IsType<BadRequestObjectResult>(result);

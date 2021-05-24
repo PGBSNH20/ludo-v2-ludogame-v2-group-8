@@ -11,6 +11,7 @@ namespace LudoGameApi.Models
 {
     public class GamePiece
     {
+        [Key]
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }

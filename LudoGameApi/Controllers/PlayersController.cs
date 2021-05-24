@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LudoGameApi.Objects;
 using LudoGameApi.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace LudoGameApi.Controllers
 {
@@ -87,5 +88,15 @@ namespace LudoGameApi.Controllers
 
             return Ok($"Player {playerName} has been deleted");
         }
+
+        [HttpGet]
+        public IActionResult Get()
+        {
+            return Ok(_dbContext.Player.Where(p => p.Id != 0));
+
+        }
+
+
+
     }
 }
