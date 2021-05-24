@@ -64,15 +64,25 @@ namespace LudoGameV2.Pages
                 // 3) Authentication och authorization för API
                 // 4) Sendgrid (E-post)
                 // 5) unittest
-                string responseContent = "https://localhost:44393/api/GameSessions/";
+                string responseContent = "https://localhost:44381/api/GameSessions/";
 
-                //var client = new RestClient("https://localhost:44393/api/");
+                //var client = new RestClient("https://localhost:44381/api/");
 
                 //var request = new RestRequest("GameSessions/", Method.GET, DataFormat.Json);
                 //_request = new RestRequest("GameSessions/", Method.GET, DataFormat.Json);
                 //var response = await client.GetAsync<List<GameSession>>(RequestMethod);
 
                 //request.OnBeforeDeserialization = resp => { resp.ContentType = "application/json"; };
+
+
+                // Any parameters? Get value, and then add to the client 
+                //string key = HttpUtility.ParseQueryString(baseURL.Query).Get("key");
+                //if (key != "")
+                //{
+                //    client.DefaultRequestHeaders.Add("api-key", key);
+                //}
+
+
 
                 if (RequestMethod.Equals("GET"))
                 {
@@ -100,6 +110,7 @@ namespace LudoGameV2.Pages
 
                 return RedirectToPage("NewGame", new { result = responseContent });
             }
+            // Det första exceptionen kanske ej behövs
             catch (ArgumentNullException uex)
             {
                 return RedirectToPage("Error", new { msg = uex.Message + " | URL missing or invalid." });
