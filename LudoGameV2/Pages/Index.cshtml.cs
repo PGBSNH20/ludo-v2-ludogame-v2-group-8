@@ -19,7 +19,6 @@ namespace LudoGameV2.Pages
 
         public void OnGet()
         {
-
         }
     }
 }

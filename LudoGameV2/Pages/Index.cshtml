@@ -1,54 +1,8 @@
 ﻿@page
 @model IndexModel
-@{
-    ViewData["Title"] = "Home page";
-}
-@section styles{
-    <link rel="Stylesheet" href="@Href("~/css/style.css")" />
-}
+@{ ViewData["Title"] = "Home Page"; }
 
-<div class="container">
-    <div class="row">
-        <div class="col-6">
-            <form>
-                <div class="form-group">
-                    <label for="userInput">User</label>
-                    <input type="text" class="form-control" id="userInput" aria-describedby="userHelp" placeholder="Enter User">
-                </div>
-                <div class="form-group">
-                    <label for="messageInput">Message</label>
-                    <input type="text" class="form-control" id="messageInput" aria-describedby="messageHelp" placeholder="Enter Message">
-                </div>
-                <button type="button" id="sendButton" class="btn btn-primary">Send Message</button>
-            </form>
-        </div>
-        <div class="col-6">
-            <ul id="messagesList"></ul>
-        </div>
-    </div>
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
-
-<script src="~/js/signalr/dist/browser/signalr.js"></script>
-<script src="~/lib/jquery/dist/jquery.js"></script>
-
-<script>
-    const connection = new signalR.HubConnectionBuilder()
-        .withUrl("/chathub")
-        .configureLogging(signalR.LogLevel.Trace)
-        .build();
-
-    connection.on("ReceiveMessage", (user, message) => {
-        const li = document.createElement("li");
-        li.textContent = user + " says " + message;
-        document.getElementById("messagesList").appendChild(li);
-    });
-
-    connection.start().catch(err => console.error(err.toString()));
-
-    document.getElementById("sendButton").addEventListener("click", event => {
-        const user = document.getElementById("userInput").value;
-        const message = document.getElementById("messageInput").value;
-        connection.invoke("SendMessage", user, message).catch(err => console.error(err.toString()));
-        event.preventDefault();
-    });
-</script>

@@ -17,6 +17,16 @@ namespace LudoGameApi.Controllers
             _dbContext = dbContext;
         }
 
+        [HttpGet("[action]")]
+        public IActionResult GetSessionNames()
+        {
+            var board = _dbContext.SessionName;
+
+            return Ok(board);
+
+        }
+
+
         [HttpPost("[action]/{name}")]
         public async Task<IActionResult> CreateSession(string name)
         {
