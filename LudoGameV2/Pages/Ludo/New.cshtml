@@ -11,8 +11,8 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 @*<label asp-for="NewPlayer.PlayerName" class="control-label"></label>*@
-                <input asp-for="NewPlayer.SessionId" class="form-control" placeholder="Session Id" />
-                <input asp-for="NewPlayer.PlayerName" class="form-control" placeholder="Player Name" />
+                <input asp-for="NewPlayer.SessionId" class="form-control" placeholder="Session Id" style="margin-bottom: 10px" />
+                <input asp-for="NewPlayer.PlayerName" class="form-control" placeholder="Player Name" style="margin-bottom: 10px"/>
                 <input type="radio" id="red" asp-for="NewPlayer.Color" value="Red">
                 <label name="red" for="red" style="color:red">Red</label><br>
                 <input type="radio" id="green" value="Green" asp-for="NewPlayer.Color">

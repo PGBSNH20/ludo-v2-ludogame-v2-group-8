@@ -85,7 +85,6 @@ namespace LudoGameV2.Pages.Ludo
             return client.Execute(request);
         }
 
-
         public void CreatePieces(NewPiece newPiece)
         {
             var client2 = new RestClient($"https://localhost:44393/api/Pieces/PostPieces/");
