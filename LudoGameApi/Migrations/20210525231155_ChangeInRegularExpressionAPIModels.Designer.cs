@@ -3,14 +3,16 @@ using LudoGameApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LudoGameApi.Migrations
 {
     [DbContext(typeof(LudoGameContext))]
-    partial class LudoGameContextModelSnapshot : ModelSnapshot
+    [Migration("20210525231155_ChangeInRegularExpressionAPIModels")]
+    partial class ChangeInRegularExpressionAPIModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -13,7 +13,9 @@ namespace LudoGameApi.Models
         public int Id { get; set; }
         [Required]
         public string PlayerName { get; set; }
-        public Color Color { get; set; }
+        [Required]
+        [RegularExpression("^(yellow|red|blue|green)$")]
+        public string Color { get; set; }
         [Required]
         public ICollection<GamePiece> Pieces { get; set; }
         public int GameSessionId { get; set; }

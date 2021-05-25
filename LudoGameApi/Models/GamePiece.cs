@@ -14,9 +14,12 @@ namespace LudoGameApi.Models
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
-        [Range(0,3)]
-        public Color Color { get; set; }
+        [Required]
+        [RegularExpression("^(yellow|red|blue|green)$")]
+        public string Color { get; set; }
+        [Required]
         public double TopPosition { get; set; }
+        [Required]
         public double LeftPosition { get; set; }
         [Range(0,44)]
         public int PositionOnBoard { get; set; }

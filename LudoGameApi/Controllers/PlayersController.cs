@@ -9,7 +9,9 @@ using LudoGameApi.Models;
 
 namespace LudoGameApi.Controllers
 {
-    public class PlayersController : Controller
+    [Route("api/[controller]/[action]")]
+    [ApiController]
+    public class PlayersController : ControllerBase
     {
         private readonly LudoGameContext _dbContext;
         public PlayersController(LudoGameContext dbContext)
@@ -17,16 +19,29 @@ namespace LudoGameApi.Controllers
             _dbContext = dbContext;
         }
 
+
+        [HttpGet("{name}")]
+        public IActionResult GetPlayer(string name)
+        {
+            var player = _dbContext.Player.Where(x => x.PlayerName == name);
+
+            if (!player.Any())
+            {
+                return NotFound("Player was not found");
+            }
+
+            return Ok(player);
+        }
         
-        [HttpPost("[action]/{playerName}/{color}/{gameSessionId}")]
-        public async Task<IActionResult> CreatePlayer(string playerName, Color color, int gameSessionId)
+        [HttpPost("{gameSessionId}/{playerName}/{color}/")]
+        public async Task<IActionResult> CreatePlayer(string playerName, string color, int gameSessionId)
         {
             if (String.IsNullOrWhiteSpace(playerName))
             {
                 return BadRequest("Playername must be valid");
             }
 
-            if (gameSessionId <= 0)
+            if (gameSessionId <= 0 && _dbContext.SessionName.Where(x => x.Id != gameSessionId).Any())
             {
                 return BadRequest($"There is no session with id {gameSessionId}");
             }
@@ -57,7 +72,7 @@ namespace LudoGameApi.Controllers
         }
 
         
-        [HttpDelete("[action]/{playerName}/{gameSessionId}")]
+        [HttpDelete("{playerName}/{gameSessionId}")]
         public async Task<IActionResult> DeletePlayer(string playerName, int gameSessionId)
         {
             if (String.IsNullOrWhiteSpace(playerName))

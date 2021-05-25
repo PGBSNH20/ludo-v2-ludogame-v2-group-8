@@ -9,7 +9,9 @@ using System.Threading.Tasks;
 
 namespace LudoGameApi.Controllers
 {
-    public class SessionNamesController : Controller
+    [Route("api/[controller]/[action]")]
+    [ApiController]
+    public class SessionNamesController : ControllerBase
     {
         private readonly LudoGameContext _dbContext;
         public SessionNamesController(LudoGameContext dbContext)
@@ -17,13 +19,13 @@ namespace LudoGameApi.Controllers
             _dbContext = dbContext;
         }
 
-        [HttpGet("[action]/{sessionName}")]
-        public async Task<IActionResult> GetLoadGame(string sessionName)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetLoadGame(int id)
         {
             var innerJoinQuery =
              from session in _dbContext.SessionName
              join player in _dbContext.Player on session.Id equals player.GameSessionId
-             join pieces in _dbContext.Pieces on player.Id equals pieces.Id
+             join pieces in _dbContext.Pieces on player.Id equals pieces.PlayerId
              select new
              {
                  idSession = session.Id,
@@ -40,7 +42,7 @@ namespace LudoGameApi.Controllers
                  topPosition = pieces.TopPosition,
              };
 
-            var result = await innerJoinQuery.Where(x => x.nameSession == sessionName).FirstOrDefaultAsync();
+            var result = await innerJoinQuery.Where(x => x.idSession == id).FirstOrDefaultAsync();
 
             if (result == null)
             {
@@ -53,7 +55,7 @@ namespace LudoGameApi.Controllers
         }
 
 
-        [HttpGet("[action]")]
+        [HttpGet]
         public IActionResult GetSessionNames()
         {
             var board = _dbContext.SessionName;
@@ -62,7 +64,7 @@ namespace LudoGameApi.Controllers
         }
 
 
-        [HttpPost("[action]/{name}")]
+        [HttpPost("{name}")]
         public async Task<IActionResult> CreateSession(string name)
         {
             if (String.IsNullOrWhiteSpace(name))
@@ -87,7 +89,7 @@ namespace LudoGameApi.Controllers
         }
 
 
-        [HttpDelete("[action]/{name}")]
+        [HttpDelete("{name}")]
         public async Task<IActionResult> DeleteSession(string name)
         {
             if (String.IsNullOrWhiteSpace(name))
