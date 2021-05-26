@@ -2,3 +2,26 @@
 @model LudoGameV2.Pages.Ludo.LoadGameModel
 @{
 }
+
+<h4>Create new game</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label for="session">Select session:</label>
+                <select id="session" name="GameSesson">
+                    <option value="volvo">Volvo</option>
+                    <option value="saab">Saab</option>
+                    <option value="fiat">Fiat</option>
+                    <option value="audi">Audi</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Start game" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+@*<h4>@Model.GameBoardMessage</h4>*@

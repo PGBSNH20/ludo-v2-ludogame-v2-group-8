@@ -13,7 +13,7 @@ namespace LudoGameApi.Data
         public LudoGameContext(DbContextOptions<LudoGameContext> options) : base(options)
         {
 
-        }
+        } 
 
         public virtual DbSet<GameSession> SessionName { get; set; }
         public virtual DbSet<Player> Player { get; set; }
