@@ -2,10 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LudoGameV2.Data;
+using LudoGameV2.Models;
 using LudoGameV2.Models.PieceStartPositions;
 using LudoGameV2.Models.RazorModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
@@ -16,6 +19,14 @@ namespace LudoGameV2.Pages.Ludo
     [Authorize]
     public class NewModel : PageModel
     {
+
+        private readonly UserManager<LudoUser> _userManager;
+
+        public NewModel(UserManager<LudoUser> userManager)
+        {
+            _userManager = userManager;
+        }
+
         public string GameBoardMessage { get; set; }
         public IActionResult OnGet()
         {
@@ -31,7 +42,8 @@ namespace LudoGameV2.Pages.Ludo
             {
                 return Page();
             }
-            var client = new RestClient($"https://localhost:44393/api/Players/CreatePlayer/{NewPlayer.SessionId}/{NewPlayer.PlayerName}/{NewPlayer.Color}/");
+            NewPlayer.PlayerAccountId = _userManager.GetUserId(User);
+            var client = new RestClient($"https://localhost:44393/api/Players/CreatePlayer/{NewPlayer.SessionId}/{NewPlayer.PlayerName}/{NewPlayer.Color}/{NewPlayer.PlayerAccountId}");
             client.Timeout = -1;
             var request = new RestRequest(Method.POST);
             request.AddJsonBody(NewPlayer);

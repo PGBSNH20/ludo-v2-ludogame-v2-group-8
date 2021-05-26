@@ -17,5 +17,7 @@ namespace LudoGameV2.Models.RazorModels
         [Required]
         [RegularExpression("^(Yellow|Red|Blue|Green)$")]
         public string Color { get; set; }
+
+        public string PlayerAccountId { get; set; }
     }
 }

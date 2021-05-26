@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,5 +20,7 @@ namespace LudoGameApi.Models
         [Required]
         public ICollection<GamePiece> Pieces { get; set; }
         public int GameSessionId { get; set; }
+        [ForeignKey("PlayerAccountId")]
+        public string PlayerAccountId { get; set; }
     }
 }

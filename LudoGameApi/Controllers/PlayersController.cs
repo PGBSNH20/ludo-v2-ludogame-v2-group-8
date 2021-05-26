@@ -33,8 +33,8 @@ namespace LudoGameApi.Controllers
             return Ok(player);
         }
         
-        [HttpPost("{gameSessionId}/{playerName}/{color}/")]
-        public async Task<IActionResult> CreatePlayer(string playerName, string color, int gameSessionId)
+        [HttpPost("{gameSessionId}/{playerName}/{color}/{playerAccountId}")]
+        public async Task<IActionResult> CreatePlayer(string playerName, string color, int gameSessionId, string playerAccountId)
         {
             if (String.IsNullOrWhiteSpace(playerName))
             {
@@ -63,6 +63,7 @@ namespace LudoGameApi.Controllers
                 PlayerName = playerName,
                 Color = color,
                 GameSessionId = gameSessionId,
+                PlayerAccountId = playerAccountId,
             };
 
             _dbContext.Player.Add(playerObj);

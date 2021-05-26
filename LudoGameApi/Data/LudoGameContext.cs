@@ -18,6 +18,7 @@ namespace LudoGameApi.Data
         public virtual DbSet<GameSession> SessionName { get; set; }
         public virtual DbSet<Player> Player { get; set; }
         public virtual DbSet<GamePiece> Pieces { get; set; }
+        public virtual DbSet<PlayerAccount> PlayerAccounts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
