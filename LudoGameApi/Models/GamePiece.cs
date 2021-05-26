@@ -15,6 +15,7 @@ namespace LudoGameApi.Models
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
+        [Range(0,3)]
         public Color Color { get; set; }
         public double TopPosition { get; set; }
         public double LeftPosition { get; set; }
@@ -24,8 +25,7 @@ namespace LudoGameApi.Models
         public int OnBoard { get; set; }
         [Range(0,4)]
         public int InGoal { get; set; }
-        [Required]
-        public Player Player { get; set; } // For join database tables.
-
+        [ForeignKey("PlayerId")]
+        public int PlayerId { get; set; }
     }
 }

@@ -1,7 +1,10 @@
+using LudoGameV2.Data;
 using LudoGameV2.Hubs;
+using LudoGameV2.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,6 +29,12 @@ namespace LudoGameV2
         {
             services.AddSignalR();
             services.AddRazorPages();
+            services.AddDbContext<LudoWebApplicationContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("LudoWebAppContextConnection")));
+            services.AddDefaultIdentity<LudoUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<LudoWebApplicationContext>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,13 +53,16 @@ namespace LudoGameV2
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
             app.UseRouting();
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapHub<LudoGameHub>("/ludoGameHub");
                 endpoints.MapRazorPages();
+                endpoints.MapHub<LudoGameHub>("/ludogamehub");
             });
         }
     }
