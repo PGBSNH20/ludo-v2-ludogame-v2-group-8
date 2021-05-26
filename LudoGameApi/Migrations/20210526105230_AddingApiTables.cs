@@ -7,19 +7,6 @@ namespace LudoGameApi.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "PlayerAccounts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PlayerAccounts", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "SessionName",
                 columns: table => new
                 {
@@ -41,18 +28,11 @@ namespace LudoGameApi.Migrations
                     PlayerName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Color = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     GameSessionId = table.Column<int>(type: "int", nullable: false),
-                    PlayerAccountId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PlayerAccountId1 = table.Column<int>(type: "int", nullable: true)
+                    PlayerAccountId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Player", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Player_PlayerAccounts_PlayerAccountId1",
-                        column: x => x.PlayerAccountId1,
-                        principalTable: "PlayerAccounts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Player_SessionName_GameSessionId",
                         column: x => x.GameSessionId,
@@ -96,11 +76,6 @@ namespace LudoGameApi.Migrations
                 name: "IX_Player_GameSessionId",
                 table: "Player",
                 column: "GameSessionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Player_PlayerAccountId1",
-                table: "Player",
-                column: "PlayerAccountId1");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -110,9 +85,6 @@ namespace LudoGameApi.Migrations
 
             migrationBuilder.DropTable(
                 name: "Player");
-
-            migrationBuilder.DropTable(
-                name: "PlayerAccounts");
 
             migrationBuilder.DropTable(
                 name: "SessionName");
