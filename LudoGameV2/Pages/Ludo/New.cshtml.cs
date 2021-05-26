@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LudoGameV2.Models.PieceStartPositions;
 using LudoGameV2.Models.RazorModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -12,6 +13,7 @@ using RestSharp;
 
 namespace LudoGameV2.Pages.Ludo
 {
+    [Authorize]
     public class NewModel : PageModel
     {
         public string GameBoardMessage { get; set; }
