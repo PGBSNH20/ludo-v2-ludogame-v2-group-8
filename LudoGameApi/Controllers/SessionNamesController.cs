@@ -1,5 +1,6 @@
 ﻿using LudoGameApi.Data;
 using LudoGameApi.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -49,7 +50,7 @@ namespace LudoGameApi.Controllers
                 return NotFound("Gamesession was not found");
             }
 
-            return Ok(result); 
+            return StatusCode(StatusCodes.Status201Created); 
 
             // Check is pieces table is empty, later
         }

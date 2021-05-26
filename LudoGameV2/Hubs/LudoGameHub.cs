@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using LudoGameV2.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,10 +10,11 @@ namespace LudoGameV2.Hubs
 {
     public class LudoGameHub : Hub
     {
-        //public async Task SendMessage(string message, string user)
-        //{
-        //    await Clients.All.SendAsync("ReceiveMessage", user, message);
+        //private readonly UserManager<LudoUser> _userManager;
 
+        //public LudoGameHub(UserManager<LudoUser> userManager)
+        //{
+        //    _userManager = userManager;
         //}
     }
 }

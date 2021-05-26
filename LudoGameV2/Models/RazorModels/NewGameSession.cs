@@ -7,5 +7,7 @@ namespace LudoGameV2.Models.RazorModels
 {
     public class NewGameSession
     {
+        public int SessionId { get; set; }
+        public string SessionName{ get; set; }
     }
 }
