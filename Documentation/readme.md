@@ -23,9 +23,13 @@ Vår webapplikation består av ett WebAPI projekt, ett razor projekt och ett ext
 
 ### Flowcharts
 
+Detta är en summerad version av vår program användning för våra klienter:
 
+![Overview Flowchart](https://user-images.githubusercontent.com/48633146/119859443-afd32180-bf15-11eb-99a0-680375b7c0bb.jpg)
 
+Här har vi två exempel på kommunikationen mellan klient och server sidan:
 
+![Data Flow](https://user-images.githubusercontent.com/48633146/119866007-9b465780-bf1c-11eb-99d2-b0ab75667cfd.jpg)
 
 
 ### API-Controllers
