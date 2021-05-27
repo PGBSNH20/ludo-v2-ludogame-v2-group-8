@@ -20,6 +20,13 @@ namespace LudoGameApi.Controllers
         }
 
 
+        [HttpGet]
+        public IActionResult GetAllPlayers()
+        {
+            var player = _dbContext.Player;
+            return Ok(player);
+        }
+
         [HttpGet("{name}")]
         public IActionResult GetPlayer(string name)
         {

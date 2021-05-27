@@ -20,13 +20,14 @@ namespace LudoGameApi.Controllers
             _dbContext = dbContext;
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetLoadGame(int id)
+        [HttpGet("{name}")]
+        public IActionResult GetLoadGame(string name)
         {
             var innerJoinQuery =
              from session in _dbContext.SessionName
              join player in _dbContext.Player on session.Id equals player.GameSessionId
              join pieces in _dbContext.Pieces on player.Id equals pieces.PlayerId
+             where session.Name == name
              select new
              {
                  idSession = session.Id,
@@ -34,23 +35,17 @@ namespace LudoGameApi.Controllers
                  playerId = player.Id,
                  playerName = player.PlayerName,
                  playerColor = player.Color,
-                 piecesId = pieces.Id,
-                 piecesName = pieces.Name,
-                 piecesColor = pieces.Color,
-                 positionOnBoard = pieces.PositionOnBoard,
-                 positionInGoal = pieces.InGoal,
-                 leftPosition = pieces.LeftPosition,
-                 topPosition = pieces.TopPosition,
+                 playerAccountId = player.PlayerAccountId,
+                 gamePiece = pieces,
              };
 
-            var result = await innerJoinQuery.Where(x => x.idSession == id).FirstOrDefaultAsync();
 
-            if (result == null)
+            if (innerJoinQuery.Count() == 0)
             {
                 return NotFound("Gamesession was not found");
             }
 
-            return StatusCode(StatusCodes.Status201Created); 
+            return Ok(innerJoinQuery); 
 
             // Check is pieces table is empty, later
         }

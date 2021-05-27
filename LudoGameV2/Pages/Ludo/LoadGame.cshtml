@@ -11,17 +11,20 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label for="session">Select session:</label>
-                <select id="session" name="GameSesson">
-                    <option value="volvo">Volvo</option>
-                    <option value="saab">Saab</option>
-                    <option value="fiat">Fiat</option>
-                    <option value="audi">Audi</option>
-                </select>
+                <input asp-for="SessionName" class="form-control" placeholder="Player Name" style="margin-bottom: 10px" />
             </div>
             <div class="form-group">
-                <input type="submit" value="Start game" class="btn btn-primary" />
+                <input type="submit" value="Load Player" class="btn btn-primary" />
             </div>
         </form>
+
+        @if (Model.containsAccountId)
+        {
+            <div class="form-group">
+                @*här inne ska allt som tillhör game sessionet synas*@
+                @*Och en knapp*@
+            </div>
+        }
     </div>
 </div>
 @*<h4>@Model.GameBoardMessage</h4>*@

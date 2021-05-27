@@ -9,5 +9,6 @@ namespace LudoGameV2.Models.RazorModels
     {
         public int SessionId { get; set; }
         public string SessionName{ get; set; }
+        public List<NewPlayer> Players { get; set; }
     }
 }
