@@ -3,26 +3,92 @@
 ## Innehållsförteckning
 
 1) Översikt
-2) Flowcharts (Kanske)
-3) API/Controllers
-4) Javascript/Frontend Design
-5) Razor Pages
-6) Tester
-7) Authentication och Authorization
-8) SignalR
-9) Sendgrid
-10) Kanske en custom middle för API-Key till våra kontroller
-11) Förbättringar under processen
-12) Detaljer
+2) Flowcharts
+3) Code Struktur
+4) API-Controllers
+5) Javascript/Frontend Design
+6) Razor Pages
+7) 
+
+8) Authentication och Authorization
+9) SignalR
+10) Sendgrid
+11) Kanske en custom middle för API-Key till våra kontroller
+12) Förbättringar under processen
+13) Detaljer
 
 ### Översikt
 Vår webapplikation består av ett WebAPI projekt, ett razor projekt och ett extern Javascript projekt som är kopplade till våra razor pages. Klientens entry-point är via vår Razor Pages där de kan skapa ett nytt bräd-spel och kan skapa nya spelare vars dem får fyra pjäser till med sina startpositioner och etc. Vi anropar på våra API-controllers via vår OnGet och OnPost methoder i vår Razor PageModels för att fetcha, lagra, uppdatera eller radera den datan vi jobbar med. Det hämtar vi från vår databas vars är kopplad till vår docker-compose så att vi slipper ha ett lokalt connection-string. Utöver det har vi tester för vår webAPI och Razorprojekt.
+
+
+### Flowcharts
+
+
+
+
+
+
+### API-Controllers
+
+
+### Razor Pages
+
+### UnitTest
+Här nedan ser ni våra unittester för API:et:
+
+```csharp
+[Fact]
+        public async Task When_Creating_NonExisting_GameSession_Expect_Ok()
+        {
+            //Arrange
+            DbContextOptions<LudoGameContext> dummyOptions = new DbContextOptionsBuilder<LudoGameContext>().Options;
+            var myContextMoq = new Mock<LudoGameContext>(dummyOptions);
+
+            List<GameSession> session = new List<GameSession>(){
+                new GameSession(){ Name = "BlackMamba"}
+            };
+
+            myContextMoq.Setup(x => x.SessionName).ReturnsDbSet(session);
+
+            var testingSession = new SessionNamesController(myContextMoq.Object);
+
+            //Act
+            var result = await testingSession.CreateSession("LudoGänget");
+
+            //Assert
+            Assert.IsType<OkObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task When_Creating_Existing_GameSession_Expect_BadRequest()
+        {
+            //Arrange
+            DbContextOptions<LudoGameContext> dummyOptions = new DbContextOptionsBuilder<LudoGameContext>().Options;
+            var myContextMoq = new Mock<LudoGameContext>(dummyOptions);
+
+            List<GameSession> session = new List<GameSession>(){
+                new GameSession(){ Name = "BlackMamba"}
+            };
+
+            myContextMoq.Setup(x => x.SessionName).ReturnsDbSet(session);
+
+            var testingSession = new SessionNamesController(myContextMoq.Object);
+
+            //Act
+            var result = await testingSession.CreateSession("BlackMamba");
+
+            //Assert
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
+```
+Här nedan ser ni våra unittester för Razor page models: (FYLL I SENARE)
 
 
 ### Authentication och Authorization
 Vi har använt oss utav Nugetpackage (Microsoft.AspNetCore.Identity.EntityFrameworkCore) för att hantera registrering och inlogning av våra klienter.
 Paketet underlättar vår arbete genom att ha sina inbyggda databaser och kodstrukturer för t.ex. Password Hashing. Koden nedan visar när en klient ska logga in med sitt konto:
 SignInManager.ISignedIn(User) condition går igenom om vi har rätt username och pass annars hamnar vi på else condition som tar oss tillbaka till där vi var.
+
 ``` csharp
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
@@ -154,4 +220,18 @@ Detta har vi gjort genom att tillägga en [Authorize] attribute till vår respek
         }
     }
 ```
+
+
+### SignalR
+
+### Sendgrid
+
+### Kanske en custom middleware för API-Key till våra kontroller
+
+### Förbättringar under processen
+
+### Detaljer
+
+
+
 
