@@ -557,6 +557,27 @@ Vi behövde lägga till detta i våra API header när vi skulle göra anrop via 
 
 
 ### Sendgrid
+Vi har skapat en konto på **SendGrid** och sen skapade en API key som vi skulle anvanda för att skicka mejl från spelet till en annar person för att utmanda de. 
+Sendan har vi skapat en Controller som har en post metod som tar emot två input paramterar FromEmeil och ToEmail. 
+Vi har updatert kod snippet som vi tog från SendGrid dokumentation.
+ ```csharp
+ public async Task SendEmail(string fromEmail , string toEmail)
+        {
+            var apiKey = "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";
+            //Environment.GetEnvironmentVariable("NAME_OF_THE_ENVIRONMENT_VARIABLE_FOR_YOUR_SENDGRID_KEY");
+            var client = new SendGridClient(apiKey);
+            var from = new EmailAddress(fromEmail);
+            var subject = "Ludo game challenge";
+            var to = new EmailAddress(toEmail);
+            var plainTextContent = "I would like to challenge in ludo game";
+            var htmlContent = "<strong>I would like to challenge in ludo game</strong>";
+            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+            var response = await client.SendEmailAsync(msg);
+        }
+```
+För att testa att den skickar mejl vi har startade LudoGameApi projektet. 
+Vi kunde testa sendEmail end-point och det gick och skicka mejl.
+
 
 ### Förbättringar under processen
 Vi hade skapat ett PlayerAccount modell i vår API projekt för att lagra ner den specifika spelaren som har startat eller laddar upp sitt existerande spel.
