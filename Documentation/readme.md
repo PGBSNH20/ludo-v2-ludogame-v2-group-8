@@ -11,6 +11,7 @@
 7) Sendgrid
 8) Kanske en custom middle för API-Key till våra kontroller
 9) Förbättringar under processen
+10) Källor
 
 
 ### Översikt
@@ -432,6 +433,94 @@ Detta har vi gjort genom att tillägga en [Authorize] attribute till vår respek
 
 ### Sendgrid
 
+Vi skapade ett Mail API som vi anropa från vår Razor projekt:
+
+Själva API:ET
+```csharp
+[Route("api/[controller]/[action]")]
+    [ApiController]
+    public class SendEmailController : ControllerBase
+    {
+        // using SendGrid's C# Library
+        // https://github.com/sendgrid/sendgrid-csharp
+
+
+        [HttpPost]
+        public async Task SendEmail(string fromEmail, string toEmail)
+        {
+            //var apiKey = "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";
+            var apiKey = "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";
+            //Environment.GetEnvironmentVariable("NAME_OF_THE_ENVIRONMENT_VARIABLE_FOR_YOUR_SENDGRID_KEY");
+            var client = new SendGridClient(apiKey);
+            var from = new EmailAddress(fromEmail);
+            var subject = "Ludo game challenge";
+            var to = new EmailAddress(toEmail);
+            var plainTextContent = "I would like to challenge in ludo game";
+            var htmlContent = "<strong>I would like to challenge in ludo game</strong>";
+            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+            var response = await client.SendEmailAsync(msg);
+        }
+    }
+```
+
+PageModel koden:
+```csharp
+[Authorize]
+    public class InviteModel : PageModel
+    {
+        [BindProperty]
+        public Mail Mail { get; set; }
+        
+        public IActionResult OnPostAsync()
+        {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+            var client = new RestClient($"https://localhost:44393/api/SendEmail/SendEmail/?{Mail.FromEmail}{Mail.ToEmail}");
+            client.Timeout = -1;
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("ApiKey", "secret1234");
+            IRestResponse response = client.Execute(request);
+
+            if (response.StatusCode.ToString() == "OK")
+            {
+                return RedirectToPage("/Index");
+            }
+            return Page();
+        }
+    }
+```
+
+PageModel Koddesign:
+```csharp
+@page
+@model LudoGameV2.Pages.Ludo.InviteModel
+@{
+    ViewData["Title"] = "Invite";
+}
+<h4>Invite a new Player</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input asp-for="Mail.FromEmail" class="form-control" placeholder="Sending an Email From:" style="margin-bottom: 10px" />
+                <input asp-for="Mail.ToEmail" class="form-control" placeholder="Sending an Email to:" style="margin-bottom: 10px" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Invite" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+```
+Frontend sidan:
+
+![SendGridDesign](https://user-images.githubusercontent.com/48633146/120044543-5ac70680-c00e-11eb-8e5f-049a53e168c6.PNG)
+
+
 ### Kanske en custom middleware för API-Key till våra kontroller
 
 ### Förbättringar under processen
@@ -439,4 +528,10 @@ Vi hade skapat ett PlayerAccount modell i vår API projekt för att lagra ner de
 Vi insåg att vi kan göra detta via vår UserManager objekt som vi fick med när vi laddade ner Identity paketet.
 
 
+### Källor
+[SendGridGuide]youtube.com/watch?v=ddSymc0hE0A&ab_channel=Twilio
+[StackOverflow]https://stackoverflow.com/questions/
+[SendGrid]https://sendgrid.com/
+[Xunit]https://andrewlock.net/creating-parameterised-tests-in-xunit-with-inlinedata-classdata-and-memberdata/
+[Xunit]https://stackoverflow.com/questions/9210281/how-to-set-the-test-case-sequence-in-xunit/40369983
 
