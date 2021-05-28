@@ -31,7 +31,7 @@ namespace LudoGameV2.Pages.Ludo
         [BindProperty]
         public bool containsAccountId { get; set; }
         public NewPlayer Player { get; set; }
-        public List<NewPiece> Pieces { get; set; }
+        public List<LoadPiece> Pieces { get; set; }
 
         public void OnPost()
         {
@@ -49,17 +49,15 @@ namespace LudoGameV2.Pages.Ludo
             {
                 containsAccountId = session.playerAccountId == _userManager.GetUserId(User);
 
-                var topPosString = Convert.ToString(session.gamePiece.topPosition);
-                var leftPosString = Convert.ToString(session.gamePiece.leftPosition);
                 var posOnBoardString = Convert.ToString(session.gamePiece.positionOnBoard);
                 var onBoardString = Convert.ToString(session.gamePiece.onBoard);
                 var inGoalString = Convert.ToString(session.gamePiece.inGoal);
                 var playerIdString = Convert.ToString(session.gamePiece.playerId);
-                NewPiece newPieceObject = new()
+                LoadPiece newPieceObject = new()
                 {
                     Color = Convert.ToString(session.gamePiece.color),
-                    TopPosition = Convert.ToDouble(topPosString),
-                    LeftPosition = Convert.ToDouble(leftPosString),
+                    TopPosition = Convert.ToString(session.gamePiece.topPosition) + "px",
+                    LeftPosition = Convert.ToString(session.gamePiece.leftPosition) + "px",
                     PositionOnBoard = Convert.ToInt32(posOnBoardString),
                     OnBoard = Convert.ToInt32(onBoardString),
                     InGoal = Convert.ToInt32(inGoalString),

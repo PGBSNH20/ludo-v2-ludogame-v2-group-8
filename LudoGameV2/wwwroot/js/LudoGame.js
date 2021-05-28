@@ -56,7 +56,7 @@ function HaveHover() {
             var firstPawn = document.getElementById(allcolor[i] + "pawn" + n);
             var secondPawn = document.getElementById(currpawn);
             const uncertainty = 5;
-            if (
+            if (firstPawn != null &&
                 parseInt(firstPawn.style.top) + uncertainty >=
                 parseInt(secondPawn.style.top) &&
                 parseInt(firstPawn.style.top) - uncertainty <=
@@ -457,19 +457,24 @@ function getPawnData() {
         pawnData = [];
     }
 
-    for (let i = 0; i < allcolor.length; i++) {
-        for (let j = 1; j <= 4; j++) {
-            var pawnName = allcolor[i] + "pawn" + j;
+    for (c in allcolor) {
+        for (let i = 1; i <= 4; i++) {
 
-            var json = `{
-                "${pawnName}": {
-                    "top": "${document.getElementById(pawnName).style.top}",
-                    "left": "${document.getElementById(pawnName).style.left}",
-                    position: "${positions.pawnName}"
-                }
-            }`;
+            var obj = new Object();
+            var pawnName = allcolor[c] + "pawn" + i;
 
-            pawnData.push(json);
+            if (document.getElementById(pawnName) != null) {
+
+                obj.name = pawnName;
+                obj.top = document.getElementById(pawnName).style.top;
+                obj.left = document.getElementById(pawnName).style.left;
+                obj.steps = positions.pawnName;
+
+                var result = JSON.stringify(obj);
+                console.log(result);
+                pawnData.push(result);
+            }
+
         }
     }
 }
@@ -490,43 +495,4 @@ function takeoutpieceLog() {
     var printAction = document.getElementById("takeoutpiece-log");
     printAction.style.color = currcolor;
     printAction.innerHTML = currcolor + ": moved " + currpawn + " into play!";
-}
-
-// DETTA FUNKAR!!!
-// if (!gameLoaded) {
-//   loadGame("bluepawn3", "330px", "364.5px", 3, 1, 0);
-//   gameLoaded = true;
-// }
-
-function loadGame(pawnName, top, left, position, onBoard, ingoal) {
-    // var loadPawn = document.getElementById(pawnName);
-    document.getElementById(pawnName).style.top = top;
-    document.getElementById(pawnName).style.left = left;
-
-    positions[pawnName] = position;
-
-    onboard[pawnName] = onBoard;
-
-    var color = document.getElementById(pawnName).style.backgroundColor;
-
-    switch (color) {
-        case "red":
-            inGoal.red = ingoal;
-            break;
-
-        case "blue":
-            inGoal.blue = ingoal;
-            break;
-
-        case "green":
-            inGoal.green = ingoal;
-            break;
-
-        case "yellow":
-            inGoal.green = ingoal;
-            break;
-
-        default:
-            break;
-    }
 }
