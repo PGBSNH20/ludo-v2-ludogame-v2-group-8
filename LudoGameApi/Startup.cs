@@ -51,6 +51,8 @@ namespace LudoGameApi
             app.UseRouting();
             app.UseAuthorization();
 
+            app.UseMiddleware<APIMiddleware>();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

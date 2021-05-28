@@ -78,6 +78,7 @@ namespace LudoGameV2.Pages.Ludo
         {
             IRestClient client = new RestClient();
             IRestRequest request = new RestRequest($"https://localhost:44393/api/SessionNames/GetLoadGame/{name}");
+            request.AddHeader("ApiKey", "secret1234");
             return client.Execute(request);
         }
     }

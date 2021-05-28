@@ -46,6 +46,7 @@ namespace LudoGameV2.Pages.Ludo
             var client = new RestClient($"https://localhost:44393/api/Players/CreatePlayer/{NewPlayer.SessionId}/{NewPlayer.PlayerName}/{NewPlayer.Color}/{NewPlayer.PlayerAccountId}");
             client.Timeout = -1;
             var request = new RestRequest(Method.POST);
+            request.AddHeader("ApiKey", "secret1234");
             request.AddJsonBody(NewPlayer);
             IRestResponse response = client.Execute(request);
 
@@ -96,6 +97,7 @@ namespace LudoGameV2.Pages.Ludo
         {
             IRestClient client = new RestClient();
             IRestRequest request = new RestRequest("https://localhost:44393/api/Players/GetPlayer/" + playerName + "/");
+            request.AddHeader("ApiKey", "secret1234");
             return client.Execute(request);
         }
 
@@ -103,6 +105,7 @@ namespace LudoGameV2.Pages.Ludo
         {
             var client2 = new RestClient($"https://localhost:44393/api/Pieces/PostPieces/");
             var request2 = new RestRequest(Method.POST);
+            request2.AddHeader("ApiKey", "secret1234");
             request2.AddJsonBody(NewPiece);
             IRestResponse response2 = client2.Execute(request2);
         }

@@ -27,6 +27,7 @@ namespace LudoGameV2.Pages.Ludo
             var client = new RestClient($"https://localhost:44393/api/SessionNames/CreateSession/{NewSession.SessionName}/");
             client.Timeout = -1;
             var request = new RestRequest(Method.POST);
+            request.AddHeader("ApiKey", "secret1234");
             request.AddJsonBody(NewSession);
             IRestResponse response = client.Execute(request);
 
