@@ -9,7 +9,7 @@
 5) Authentication och Authorization
 6) SignalR
 7) Sendgrid
-8) Kanske en custom middle för API-Key till våra kontroller
+8) Custom Middleware
 9) Förbättringar under processen
 
 
@@ -430,13 +430,138 @@ Detta har vi gjort genom att tillägga en [Authorize] attribute till vår respek
 
 ### SignalR
 
-### Sendgrid
+### Custom Middleware
 
-### Kanske en custom middleware för API-Key till våra kontroller
+Vi gjorde ett custom Middleware i vårt API projekt där vi säkrade alla våra controllers när vi ska anropa på något.
+Det gjorde vi genom att skapa en ApiMiddleware class.
+
+
+
+```csharp
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Primitives;
+
+namespace LudoGameApi.Data
+{
+    public class APIMiddleware
+    {
+        private readonly RequestDelegate _next;
+        private const string APIKEYNAME = "ApiKey";
+        public APIMiddleware(RequestDelegate next)
+        {
+            _next = next;
+        }
+        public async Task InvokeAsync(HttpContext context)
+        {
+            if (!context.Request.Headers.TryGetValue(APIKEYNAME, out var extractedApiKey))
+            {
+                context.Response.StatusCode = 401;
+                await context.Response.WriteAsync("Api Key was not provided. (Using ApiKeyMiddleware) ");
+                return;
+            }
+
+            var appSettings = context.RequestServices.GetRequiredService<IConfiguration>();
+
+            var apiKey = appSettings.GetValue<string>(APIKEYNAME);
+
+            if (!apiKey.Equals(extractedApiKey))
+            {
+                context.Response.StatusCode = 401;
+                await context.Response.WriteAsync("Unauthorized client. (Using ApiKeyMiddleware)");
+                return;
+            }
+
+            await _next(context);
+        }
+    }
+}
+
+```
+Som ni ser ovan så om vi inte anger något APIKey så får vi ett 401 Statuskod
+med ett felmeddelande där det står "Api Key was not provided. (Using ApiKeyMiddleWare)
+men om vi Använder oss utav ApiKey men anger ett fellösenord så får vi ett 401 Statuskod
+med att ett Unauthorized client. (Using ApiKeyMiddleware) felmeddelande.
+
+Detta var själva kodlogiken och så klart har vi lagt till våra custom Middele i våra pipeline för
+att ha tillgång till det som ni ser enligt nedan:
+
+```csharp
+public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "LudoGameApi v1"));
+            }
+
+            app.UseHttpsRedirection();
+            app.UseRouting();
+            app.UseAuthorization();
+
+            app.UseMiddleware<APIMiddleware>(); // Lagt till CustomMiddleware
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+        }
+```
+
+
+Detta har vi lagt till i vår appsetting.json för att referera till ApiKey ovan (APIKEYNAME).
+```json
+"ApiKey": "secret1234"
+```
+
+Vi behövde lägga till detta i våra API header när vi skulle göra anrop via våra pagemodels:
+
+```csharp
+[Authorize]
+    public class CreateSessionModel : PageModel
+    {
+        public string GameBoardSessionMessage { get; set; }
+        [BindProperty]
+        public NewGameSession NewSession { get; set; }
+        public IActionResult OnPostAsync()
+        {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+            var client = new RestClient($"https://localhost:44393/api/SessionNames/CreateSession/{NewSession.SessionName}/");
+            client.Timeout = -1;
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("ApiKey", "secret1234"); // lagt till detta i header på det viset
+            request.AddJsonBody(NewSession);
+            IRestResponse response = client.Execute(request);
+
+            GameBoardSessionMessage = response.Content;
+
+            if (response.StatusCode.ToString() == "OK")
+            {
+                return Content("Done");
+            }
+            return Page();
+        }
+    }
+```
+
+
+### Sendgrid
 
 ### Förbättringar under processen
 Vi hade skapat ett PlayerAccount modell i vår API projekt för att lagra ner den specifika spelaren som har startat eller laddar upp sitt existerande spel.
 Vi insåg att vi kan göra detta via vår UserManager objekt som vi fick med när vi laddade ner Identity paketet.
+La till en custommiddle för att säkra våra controllers som jag har nämnt ovan.
 
 
 
