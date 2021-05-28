@@ -30,7 +30,7 @@ namespace LudoGameV2.Pages.Ludo
 
             if (response.StatusCode.ToString() == "OK")
             {
-                return Content("Done");
+                return RedirectToPage("/Index");
             }
             return Page();
         }
