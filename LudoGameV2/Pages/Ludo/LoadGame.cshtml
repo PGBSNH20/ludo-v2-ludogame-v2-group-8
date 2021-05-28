@@ -1,0 +1,124 @@
+﻿@page
+@model LudoGameV2.Pages.Ludo.LoadGameModel
+@{
+}
+
+<h4>Create new game</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label for="session">Select session:</label>
+                <input asp-for="SessionName" class="form-control" placeholder="Player Name" style="margin-bottom: 10px" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Load Player" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+@if (Model.containsAccountId)
+{
+    <link href="~/css/style.css" rel="stylesheet" />
+    <div id="main">
+        <div class="section group">
+            <div class="col span_1_of_2">
+                <div id="board"></div>
+
+                <div id="dice" onclick="randomNum()"></div>
+                <!-- red pawns  start top 28 left 318-->
+                <div class="pawns"
+                     id="redpawn1"
+                     onclick="randomMove('red',1)"
+                     style="background-color: red; top: 153px; left: 440px"></div>
+                <div class="pawns"
+                     id="redpawn2"
+                     onclick="randomMove('red',2)"
+                     style="background-color: red; top: 105px; left: 393px"></div>
+                <div class="pawns"
+                     id="redpawn3"
+                     onclick="randomMove('red',3)"
+                     style="background-color: red; top: 58px; left: 440px"></div>
+                <div class="pawns"
+                     id="redpawn4"
+                     onclick="randomMove('red',4)"
+                     style="background-color: red; top: 106px; left: 488px"></div>
+
+                <!-- yellow pawns  start top 523 left 218-->
+                <div class="pawns"
+                     id="yellowpawn1"
+                     onclick="randomMove('yellow',1)"
+                     style="background-color: yellow; top: 455px; left: 43px"></div>
+                <div class="pawns"
+                     id="yellowpawn2"
+                     onclick="randomMove('yellow',2)"
+                     style="background-color: yellow; top: 455px; left: 138px"></div>
+                <div class="pawns"
+                     id="yellowpawn3"
+                     onclick="randomMove('yellow',3)"
+                     style="background-color: yellow; top: 408px; left: 90px"></div>
+                <div class="pawns"
+                     id="yellowpawn4"
+                     onclick="randomMove('yellow',4)"
+                     style="background-color: yellow; top: 502px; left: 91px"></div>
+
+                <!-- green pawns  start top 227 left 22-->
+                <div class="pawns"
+                     id="greenpawn1"
+                     onclick="randomMove('green',1)"
+                     style="background-color: green; top: 152px; left: 90px"></div>
+                <div class="pawns"
+                     id="greenpawn2"
+                     onclick="randomMove('green',2)"
+                     style="background-color: green; top: 105px; left: 138px"></div>
+                <div class="pawns"
+                     id="greenpawn3"
+                     onclick="randomMove('green',3)"
+                     style="background-color: green; top: 59px; left: 90px"></div>
+                <div class="pawns"
+                     id="greenpawn4"
+                     onclick="randomMove('green',4)"
+                     style="background-color: green; top: 106px; left: 43px"></div>
+
+                <!-- blue pawns  start top 326 left 515-->
+                <div class="pawns"
+                     id="bluepawn1"
+                     onclick="randomMove('blue',1)"
+                     style="background-color: blue; top: 455px; left: 487px"></div>
+                <div class="pawns"
+                     id="bluepawn2"
+                     onclick="randomMove('blue',2)"
+                     style="background-color: blue; top: 455px; left: 393px"></div>
+                <div class="pawns"
+                     id="bluepawn3"
+                     onclick="randomMove('blue',3)"
+                     style="background-color: blue; top: 408px; left: 440px"></div>
+                <div class="pawns"
+                     id="bluepawn4"
+                     onclick="randomMove('blue',4)"
+                     style="background-color: blue; top: 502px; left: 441px"></div>
+            </div>
+            <h2 style="font-size: 32px">Current Player:</h2>
+            <h4 id="player" style="color: yellow">yellow</h4>
+            <p id="badtext" style="font-size: 22px"></p>
+            <p id="takeoutpiece-log" style="color: black; font-size: 22px"></p>
+            <p id="action-log" style="color: black; font-size: 22px"></p>
+            <p id="knockout-log" style="color: black; font-size: 22px"></p>
+            @*            <div class="col span_1_of_2 border-box text-formatting">*@
+            <!-- <h4 id="uselesstext1">It`s</h4> -->
+            <!-- <h4 id="uselesstext2">s turn</h4> -->
+            @*<div>
+                    <h2 style="font-size: 32px">
+                        <br />
+                        <br />
+                        Latest Action:
+                    </h2>
+                </div>*@
+            @*</div>*@
+        </div>
+    </div>
+    <script src="~/js/LudoGame.js"></script>
+}
+@*<h4>@Model.GameBoardMessage</h4>*@
