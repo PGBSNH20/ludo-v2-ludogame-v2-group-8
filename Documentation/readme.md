@@ -575,6 +575,7 @@ Vi har updatert kod snippet som vi tog från SendGrid dokumentation.
             var response = await client.SendEmailAsync(msg);
         }
 ```
+
 För att testa att den skickar mejl vi har startade LudoGameApi projektet. 
 Vi kunde testa sendEmail end-point och det gick och skicka mejl.
 
