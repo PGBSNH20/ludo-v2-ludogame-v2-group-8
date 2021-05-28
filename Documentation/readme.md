@@ -11,6 +11,7 @@
 7) Sendgrid
 8) Custom Middleware
 9) Förbättringar under processen
+10) Källor
 
 
 ### Översikt
@@ -562,5 +563,5 @@ Vi hade skapat ett PlayerAccount modell i vår API projekt för att lagra ner de
 Vi insåg att vi kan göra detta via vår UserManager objekt som vi fick med när vi laddade ner Identity paketet.
 La till en custommiddle för att säkra våra controllers som jag har nämnt ovan.
 
-
+### Källor
 
