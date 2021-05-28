@@ -289,7 +289,6 @@ Här nedan ser ni våra unittester för API:et:
             Assert.IsType<BadRequestObjectResult>(result);
         }
 ```
-Här nedan ser ni våra unittester för Razor page models: (FYLL I SENARE)
 
 
 ### Authentication och Authorization
