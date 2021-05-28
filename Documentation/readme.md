@@ -565,3 +565,7 @@ La till en custommiddle för att säkra våra controllers som jag har nämnt ova
 
 ### Källor
 
+[Udemy Rest-API]https://www.udemy.com/course/learn-restful-apis-with-aspnet-core-5/
+[Stackoverflow]https://stackoverflow.com/questions/
+[Custom Middleware ApiKey]http://codingsonata.com/secure-asp-net-core-web-api-using-api-key-authentication/
+[Sendgrid]https://sendgrid.com/
