@@ -1,25 +1,4 @@
-﻿"use strict";
-var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
-
-connection.on("ReceiveMessage", function (name, color, topPosition, leftPosition, positionOnBoard, onBoard, inGoal) {
-
-    var pawn = document.getElementById("name");
-    pawn.style.color = color;
-    pawn.style.top = topPosition;
-    pawn.style.left = leftPosition;
-    positions[name] = positionOnBoard;
-    onboard[name] = onBoard;
-    inGoal[color] = inGoal;
-});
-
-connection.start().then(function () {
-}).catch(function (err) {
-    return console.error(err.toString());
-});
-
-
-
-var currPos = 0;
+﻿var currPos = 0;
 var step = 49.5;
 var currcolor = "";
 var NumOfPaw = "";
@@ -31,6 +10,22 @@ var inGoal = { red: 0, blue: 0, green: 0, yellow: 0 };
 var pawnData = [];
 var gameLoaded = false;
 var playerAmount = 2; // Glöm inte att lägga till för tre spelare
+var pPawn = null;
+var pName = "";
+var pColor = "";
+var pTopPosition = "";
+var pLeftPosition = "";
+var pPositionOnBoard = 0
+var pOnBoard = 0;
+var pInGoal = 0;
+
+
+
+
+//var pName = document.getElementById(currpawn);
+
+
+
 
 var positions = {
     redpawn1: 0,
@@ -467,12 +462,56 @@ function randomMove(Color, paw) {
                     clicked = false;
                     var dice = document.getElementById("dice");
                     dice.style.backgroundImage = "url(../js/Images/dice1.gif)";
+
+
+
+                    pPawn = document.getElementById(currpawn);
+                    pName = pPawn.id;
+                    pColor = pPawn.style.backgroundColor;
+                    pTopPosition = pPawn.style.top;
+                    pLeftPosition = pPawn.style.left;
+                    pPositionOnBoard = positions[currpawn];
+                    pOnBoard = onboard[currpawn];
+                    pInGoal = inGoal[pColor];
+
+                    "use strict";
+                    var connection = new signalR.HubConnectionBuilder().withUrl("/ludogamehub").build();
+
+                    connection.on("ReceiveMessage", function (pName, pColor, pTopPosition, pLeftPosition, pPositionOnBoard, pOnBoard, pInGoal) {
+
+                        document.getElementById(pName).style.color = pColor;
+                        document.getElementById(pName).style.top = pTopPosition;
+                        document.getElementById(pName).style.left = pLeftPosition;
+                        positions[pName] = pPositionOnBoard;
+                        onboard[pName] = pOnBoard;
+                        inGoal[pName] = pInGoal;
+                    });
+
+                    connection.start().then(function () {
+
+                        startName = pName;
+                        startColor = pColor;
+                        startTop = pTopPosition;
+                        startLeft = pLeftPosition;
+                        startPositions = pPositionOnBoard;
+                        startOnboard = pOnBoard;
+                        startInGoal = pInGoal;
+
+                        connection.invoke("SendMessage", startName, pColor, pTopPosition, pLeftPosition, pPositionOnBoard, pOnBoard, pInGoal)
+                            .catch(function (err) {
+                                return console.error(err.toString());
+                            });
+                    });
+
                 } else Stuck();
             }
         }
     }
     getPawnData();
 }
+
+
+
 
 function getPawnData() {
     if (pawnData.length != 0) {

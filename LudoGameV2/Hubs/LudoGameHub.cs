@@ -18,9 +18,9 @@ namespace LudoGameV2.Hubs
         //}
 
 
-        public async Task SendMessage(string name, string color, string topPosition, string leftPosition, int positionOnBoard, int onBoard, int inGoal)
+        public async Task SendMessage(string pName, string pColor, string pTopPosition, string pLeftPosition, int pPositionOnBoard, int pOnBoard, int pInGoal)
         {
-            await Clients.All.SendAsync("ReceiveMessage", name, color, topPosition, leftPosition, positionOnBoard, onBoard, inGoal);
+            await Clients.All.SendAsync("ReceiveMessage", pName, pColor, pTopPosition, pLeftPosition, pPositionOnBoard, pOnBoard, pInGoal);
         }
     }
 }
