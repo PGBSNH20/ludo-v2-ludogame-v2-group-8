@@ -1,4 +1,25 @@
-﻿var currPos = 0;
+﻿"use strict";
+var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+
+connection.on("ReceiveMessage", function (name, color, topPosition, leftPosition, positionOnBoard, onBoard, inGoal) {
+
+    var pawn = document.getElementById("name");
+    pawn.style.color = color;
+    pawn.style.top = topPosition;
+    pawn.style.left = leftPosition;
+    positions[name] = positionOnBoard;
+    onboard[name] = onBoard;
+    inGoal[color] = inGoal;
+});
+
+connection.start().then(function () {
+}).catch(function (err) {
+    return console.error(err.toString());
+});
+
+
+
+var currPos = 0;
 var step = 49.5;
 var currcolor = "";
 var NumOfPaw = "";
@@ -47,6 +68,7 @@ var onboard = {
     yellowpawn3: 0,
     yellowpawn4: 0,
 };
+
 
 function HaveHover() {
     var count = 0;
@@ -496,3 +518,5 @@ function takeoutpieceLog() {
     printAction.style.color = currcolor;
     printAction.innerHTML = currcolor + ": moved " + currpawn + " into play!";
 }
+
+

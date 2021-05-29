@@ -32,7 +32,7 @@
                 @foreach (var piece in Model.Pieces)
                 {
                     <div class="pawns"
-                         id= @piece.Name
+                         id=@piece.Name
                          onclick="randomMove(@("'" + piece.Color + "'"),@piece.Name.Substring(piece.Name.IndexOf('n') + 1))"
                          style="background-color: @piece.Color; top: @piece.TopPosition; left: @piece.LeftPosition"></div>
                 }
@@ -45,6 +45,7 @@
             <p id="knockout-log" style="color: black; font-size: 22px"></p>
         </div>
     </div>
-    <script src="~/js/LudoGame.js"></script>
 }
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/LudoGame.js"></script>
 @*<h4>@Model.GameBoardMessage</h4>*@

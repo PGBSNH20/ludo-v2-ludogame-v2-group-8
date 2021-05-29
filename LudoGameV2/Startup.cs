@@ -62,7 +62,7 @@ namespace LudoGameV2
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
-                endpoints.MapHub<LudoGameHub>("/ludogamehub");
+                endpoints.MapHub<LudoGameHub>("/chathub");
             });
         }
     }
