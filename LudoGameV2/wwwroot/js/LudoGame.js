@@ -10,6 +10,7 @@ var inGoal = { red: 0, blue: 0, green: 0, yellow: 0 };
 var pawnData = [];
 var gameLoaded = false;
 var playerAmount = 2; // Glöm inte att lägga till för tre spelare
+
 var pPawn = null;
 var pName = "";
 var pColor = "";
@@ -19,13 +20,7 @@ var pPositionOnBoard = 0
 var pOnBoard = 0;
 var pInGoal = 0;
 
-
-
-
 //var pName = document.getElementById(currpawn);
-
-
-
 
 var positions = {
     redpawn1: 0,
@@ -63,6 +58,28 @@ var onboard = {
     yellowpawn3: 0,
     yellowpawn4: 0,
 };
+
+
+"use strict";
+var connection = new signalR.HubConnectionBuilder().withUrl("/ludogamehub").build();
+
+connection.start().then(function () {
+}).catch(function (err) {
+    return console.error(err.toString());
+});
+connection.on("ReceiveMessage", function (pName, pColor, pTopPosition, pLeftPosition, pPositionOnBoard, pOnBoard, pInGoal) {
+
+    document.getElementById(pName).style.color = pColor;
+    document.getElementById(pName).style.top = pTopPosition;
+    document.getElementById(pName).style.left = pLeftPosition;
+    positions[pName] = pPositionOnBoard;
+    onboard[pName] = pOnBoard;
+    inGoal[pName] = pInGoal;
+    dice.style.backgroundImage = pDiceImage;
+});
+connection.on("ReceiveDiceMessage", function (pDiceImage) {
+    dice.style.backgroundImage = pDiceImage;
+});
 
 
 function HaveHover() {
@@ -108,6 +125,8 @@ function Stuck() {
     }
 }
 function changePlayer() {
+
+
     if (num != 6 && playerAmount == 4) {
         var text = document.getElementById("player");
         switch (text.innerText) {
@@ -364,6 +383,14 @@ function randomNum() {
         window.setTimeout(changePlayer, 1000);
         clicked = false;
     }
+
+    var pDiceImage = dice.style.backgroundImage;
+    connection.invoke("SendDiceMessage", pDiceImage)
+        .catch(function (err) {
+            return console.error(err.toString());
+        });
+
+
 }
 
 function randomMove(Color, paw) {
@@ -458,12 +485,19 @@ function randomMove(Color, paw) {
                         CheckForWinner();
                         changePlayer();
                     }
+
+
+
                     num = 0;
                     clicked = false;
                     var dice = document.getElementById("dice");
                     dice.style.backgroundImage = "url(../js/Images/dice1.gif)";
 
-
+                    var pDiceImage = dice.style.backgroundImage;
+                    connection.invoke("SendDiceMessage", pDiceImage)
+                        .catch(function (err) {
+                            return console.error(err.toString());
+                        });
 
                     pPawn = document.getElementById(currpawn);
                     pName = pPawn.id;
@@ -474,43 +508,18 @@ function randomMove(Color, paw) {
                     pOnBoard = onboard[currpawn];
                     pInGoal = inGoal[pColor];
 
-                    "use strict";
-                    var connection = new signalR.HubConnectionBuilder().withUrl("/ludogamehub").build();
-
-                    connection.on("ReceiveMessage", function (pName, pColor, pTopPosition, pLeftPosition, pPositionOnBoard, pOnBoard, pInGoal) {
-
-                        document.getElementById(pName).style.color = pColor;
-                        document.getElementById(pName).style.top = pTopPosition;
-                        document.getElementById(pName).style.left = pLeftPosition;
-                        positions[pName] = pPositionOnBoard;
-                        onboard[pName] = pOnBoard;
-                        inGoal[pName] = pInGoal;
-                    });
-
-                    connection.start().then(function () {
-
-                        startName = pName;
-                        startColor = pColor;
-                        startTop = pTopPosition;
-                        startLeft = pLeftPosition;
-                        startPositions = pPositionOnBoard;
-                        startOnboard = pOnBoard;
-                        startInGoal = pInGoal;
-
-                        connection.invoke("SendMessage", startName, pColor, pTopPosition, pLeftPosition, pPositionOnBoard, pOnBoard, pInGoal)
-                            .catch(function (err) {
-                                return console.error(err.toString());
-                            });
-                    });
+                    connection.invoke("SendMessage", pName, pColor, pTopPosition, pLeftPosition, pPositionOnBoard, pOnBoard, pInGoal)
+                        .catch(function (err) {
+                            return console.error(err.toString());
+                        });
 
                 } else Stuck();
             }
         }
     }
+
     getPawnData();
 }
-
-
 
 
 function getPawnData() {
