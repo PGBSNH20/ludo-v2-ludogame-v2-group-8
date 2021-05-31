@@ -10,6 +10,8 @@ var inGoal = { red: 0, blue: 0, green: 0, yellow: 0 };
 var pawnData = [];
 var gameLoaded = false;
 var playerAmount = 2; // Glöm inte att lägga till för tre spelare
+var dice = document.getElementById('dice');
+var text = document.getElementById("player");
 
 var pPawn = null;
 var pName = "";
@@ -19,6 +21,8 @@ var pLeftPosition = "";
 var pPositionOnBoard = 0
 var pOnBoard = 0;
 var pInGoal = 0;
+var pDiceImage = null;
+var pPlayerTurn = "";
 
 //var pName = document.getElementById(currpawn);
 
@@ -59,7 +63,6 @@ var onboard = {
     yellowpawn4: 0,
 };
 
-
 "use strict";
 var connection = new signalR.HubConnectionBuilder().withUrl("/ludogamehub").build();
 
@@ -75,12 +78,20 @@ connection.on("ReceiveMessage", function (pName, pColor, pTopPosition, pLeftPosi
     positions[pName] = pPositionOnBoard;
     onboard[pName] = pOnBoard;
     inGoal[pName] = pInGoal;
-    dice.style.backgroundImage = pDiceImage;
 });
 connection.on("ReceiveDiceMessage", function (pDiceImage) {
     dice.style.backgroundImage = pDiceImage;
+    console.log('🦄')
+    var millisecondsToWait = 3000;
+    setTimeout(function () {
+        // Whatever you want to do after the wait
+        dice.style.backgroundImage = "url(../js/Images/dice1.gif)";
+    }, millisecondsToWait);
 });
 
+connection.on("ReceiveChangePlayerMessage", function (pPlayerTurn) {
+    text.innerText = text.style.color = pPlayerTurn;
+});
 
 function HaveHover() {
     var count = 0;
@@ -118,7 +129,7 @@ function Stuck() {
             var badtext = document.getElementById("badtext");
             badtext.innerText = "Unfortunatlly you stuck";
             clicked = false;
-            var dice = document.getElementById("dice");
+            dice = document.getElementById("dice");
             dice.style.backgroundImage = "url(../js/Images/dice1.gif)";
             window.setTimeout(changePlayer, 1000);
         }
@@ -184,8 +195,14 @@ function changePlayer() {
     //   document.getElementById("knockout-log").innerText = "";
     //   document.getElementById("action-log").innerText = "";
 
-    var dice = document.getElementById("dice");
+    dice = document.getElementById("dice");
     dice.style.backgroundImage = "url(../js/Images/dice1.gif)";
+
+    var pPlayerTurn = text.innerText = text.style.color;
+    connection.invoke("SendChangePlayerMessage", pPlayerTurn)
+        .catch(function (err) {
+            return console.error(err.toString());
+        });
 }
 
 function DontHaveOtherFree() {
@@ -201,7 +218,7 @@ function DontHaveOtherFree() {
 }
 function CheckForWinner() {
     if (inGoal[currcolor] == 4) {
-        var dice = document.getElementById("dice");
+        dice = document.getElementById("dice");
         var player = document.getElementById("badtext");
         dice.innerText = "";
         dice.style.visibility = "hidden";
@@ -298,6 +315,7 @@ pushSteps(stepUp, stepsGreen, 4);
 pushSteps(stepLeft, stepsGreen, 4);
 pushSteps(stepUp, stepsGreen, 1);
 pushSteps(stepRight, stepsGreen, 5);
+
 function ResetPawn(victim) {
     onboard[victim] = 0;
     positions[victim] = 0;
@@ -373,7 +391,7 @@ function randomNum() {
     if (!clicked) {
         num = Math.floor(Math.random() * 6 + 1);
         // num = 6;
-        var dice = document.getElementById("dice");
+        dice = document.getElementById("dice");
         dice.style.backgroundImage = "url(../js/Images/" + num + ".jpg)";
         clicked = true;
     }
@@ -389,8 +407,6 @@ function randomNum() {
         .catch(function (err) {
             return console.error(err.toString());
         });
-
-
 }
 
 function randomMove(Color, paw) {
@@ -490,14 +506,7 @@ function randomMove(Color, paw) {
 
                     num = 0;
                     clicked = false;
-                    var dice = document.getElementById("dice");
-                    dice.style.backgroundImage = "url(../js/Images/dice1.gif)";
 
-                    var pDiceImage = dice.style.backgroundImage;
-                    connection.invoke("SendDiceMessage", pDiceImage)
-                        .catch(function (err) {
-                            return console.error(err.toString());
-                        });
 
                     pPawn = document.getElementById(currpawn);
                     pName = pPawn.id;
@@ -520,7 +529,6 @@ function randomMove(Color, paw) {
 
     getPawnData();
 }
-
 
 function getPawnData() {
     if (pawnData.length != 0) {

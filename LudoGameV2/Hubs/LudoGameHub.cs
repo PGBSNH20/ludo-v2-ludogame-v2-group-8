@@ -23,6 +23,11 @@ namespace LudoGameV2.Hubs
         public async Task SendDiceMessage(string diceImage)
         {
             await Clients.All.SendAsync("ReceiveDiceMessage", diceImage);
+        }        
+        
+        public async Task SendChangePlayerMessage(string playerColor)
+        {
+            await Clients.All.SendAsync("ReceiveChangePlayerMessage", playerColor);
         }
     }
 }
