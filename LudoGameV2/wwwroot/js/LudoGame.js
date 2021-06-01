@@ -65,11 +65,16 @@ var onboard = {
 
 "use strict";
 var connection = new signalR.HubConnectionBuilder().withUrl("/ludogamehub").build();
-
+// Basically starting the connection
 connection.start().then(function () {
+    // Here im getting the websocket url. 
+    var hub = this.connection;
+    var connectionUrl = hub["connection"].transport.webSocket.url;
+    console.log(connectionUrl);
 }).catch(function (err) {
     return console.error(err.toString());
 });
+
 connection.on("ReceiveMessage", function (pName, pColor, pTopPosition, pLeftPosition, pPositionOnBoard, pOnBoard, pInGoal) {
 
     document.getElementById(pName).style.color = pColor;
@@ -95,7 +100,6 @@ connection.on("ReceiveDiceMessage", function (pDiceImage) {
     'use strict';
 
     var pawnsInNests = true;
-
     for (var i = 1; i <= 4; i++) {
         var nestColor = document.getElementById('player').style.color;
         if (onboard[nestColor + "pawn" + i] != 0) {
