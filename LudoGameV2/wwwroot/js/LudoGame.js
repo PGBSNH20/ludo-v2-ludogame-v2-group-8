@@ -77,16 +77,39 @@ connection.on("ReceiveMessage", function (pName, pColor, pTopPosition, pLeftPosi
     document.getElementById(pName).style.left = pLeftPosition;
     positions[pName] = pPositionOnBoard;
     onboard[pName] = pOnBoard;
-    inGoal[pName] = pInGoal;
+    inGoal[pColor] = pInGoal;
+
+    // When a piece goes to goal!
+    if (inGoal[pColor] >= 1 && onboard[pName] == 0) {
+        document.getElementById(pName).style.visibility = "hidden";
+    }
+
+    //refresh the dice
+    dice.style.backgroundImage = "url(../js/Images/dice1.gif)";
 });
+
+
 connection.on("ReceiveDiceMessage", function (pDiceImage) {
     dice.style.backgroundImage = pDiceImage;
-    console.log('🦄')
-    var millisecondsToWait = 3000;
-    setTimeout(function () {
-        // Whatever you want to do after the wait
-        dice.style.backgroundImage = "url(../js/Images/dice1.gif)";
-    }, millisecondsToWait);
+
+    'use strict';
+
+    var pawnsInNests = true;
+
+    for (var i = 1; i <= 4; i++) {
+        var nestColor = document.getElementById('player').style.color;
+        if (onboard[nestColor + "pawn" + i] != 0) {
+            pawnsInNests = false;
+        }
+    }
+
+    if (pawnsInNests && num != 6) {
+
+        var millisecondsToWait = 1000;
+        setTimeout(function () {
+            dice.style.backgroundImage = "url(../js/Images/dice1.gif)";
+        }, millisecondsToWait);
+    }
 });
 
 connection.on("ReceiveChangePlayerMessage", function (pPlayerTurn) {
@@ -123,7 +146,7 @@ function HaveHover() {
 }
 
 function Stuck() {
-    var text = document.getElementById("player");
+    text = document.getElementById("player");
     if (onboard[currpawn] == 0 || currPos + num > 44) {
         if (DontHaveOtherFree() || currPos + num > 44) {
             var badtext = document.getElementById("badtext");
@@ -134,12 +157,13 @@ function Stuck() {
             window.setTimeout(changePlayer, 1000);
         }
     }
+    //dice.style.backgroundImage = "url(../js/Images/dice1.gif)";
 }
 function changePlayer() {
 
 
     if (num != 6 && playerAmount == 4) {
-        var text = document.getElementById("player");
+        text = document.getElementById("player");
         switch (text.innerText) {
             case "red":
                 text.innerText = text.style.color = "blue";
@@ -161,7 +185,7 @@ function changePlayer() {
         playerAmount == 2 &&
         (player.style.color == "red" || player.style.color == "yellow")
     ) {
-        var text = document.getElementById("player");
+        text = document.getElementById("player");
         switch (text.innerText) {
             case "red":
                 text.innerText = text.style.color = "yellow";
@@ -177,7 +201,7 @@ function changePlayer() {
         playerAmount == 2 &&
         (player.style.color == "blue" || player.style.color == "green")
     ) {
-        var text = document.getElementById("player");
+        text = document.getElementById("player");
         switch (text.innerText) {
             case "blue":
                 text.innerText = text.style.color = "green";
@@ -206,7 +230,7 @@ function changePlayer() {
 }
 
 function DontHaveOtherFree() {
-    var text = document.getElementById("player");
+    text = document.getElementById("player");
     for (var i = 1; i <= 4; i++) {
         if (
             onboard[text.innerText + "pawn" + i] == 1 ||
@@ -410,7 +434,7 @@ function randomNum() {
 }
 
 function randomMove(Color, paw) {
-    var text = document.getElementById("player");
+    text = document.getElementById("player");
     NumOfPaw = paw;
     currcolor = Color;
     currpawn = currcolor + "pawn" + NumOfPaw;
@@ -501,8 +525,6 @@ function randomMove(Color, paw) {
                         CheckForWinner();
                         changePlayer();
                     }
-
-
 
                     num = 0;
                     clicked = false;

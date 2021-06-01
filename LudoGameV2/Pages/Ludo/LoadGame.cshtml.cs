@@ -30,23 +30,30 @@ namespace LudoGameV2.Pages.Ludo
         public string SessionName { get; set; }
         [BindProperty]
         public bool containsAccountId { get; set; }
-        public NewPlayer Player { get; set; }
+        [BindProperty]
+        public List<NewPlayer> Players { get; set; }
+        [BindProperty]
         public List<LoadPiece> Pieces { get; set; }
 
         public void OnPost()
         {
             dynamic sessions = JsonConvert.DeserializeObject(GetLoadGame(SessionName).Content);
 
-            Player = new()
-            {
-                PlayerName = Convert.ToString(sessions[0].playerName),
-                Color = Convert.ToString(sessions[0].playerColor),
-                PlayerAccountId = Convert.ToString(sessions[0].playerAccountId)
-            };
-
-
             foreach (var session in sessions)
             {
+
+                NewPlayer player = new()
+                {
+                    PlayerName = Convert.ToString(session.playerName),
+                    Color = Convert.ToString(session.playerColor),
+                    PlayerAccountId = Convert.ToString(session.playerAccountId)
+                };
+
+                if (!Players.Where(x => x.PlayerName.Contains(player.PlayerName)).Any() || Players.Count == 0)
+                {
+                    Players.Add(player);
+                }
+
                 containsAccountId = session.playerAccountId == _userManager.GetUserId(User);
 
                 var posOnBoardString = Convert.ToString(session.gamePiece.positionOnBoard);

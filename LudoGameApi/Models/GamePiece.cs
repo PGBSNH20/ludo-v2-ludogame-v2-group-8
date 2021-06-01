@@ -25,7 +25,7 @@ namespace LudoGameApi.Models
         public int PositionOnBoard { get; set; }
         [Range(0,1)]
         public int OnBoard { get; set; }
-        [Range(0,4)]
+        [Range(0,1)]
         public int InGoal { get; set; }
         [ForeignKey("PlayerId")]
         public int PlayerId { get; set; }
